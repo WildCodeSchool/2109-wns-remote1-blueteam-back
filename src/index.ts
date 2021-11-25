@@ -1,15 +1,19 @@
-import express from 'express';
-import cors from 'cors';
-import { port } from './settings';
+import 'reflect-metadata'
+import * as tq from 'type-graphql'
+import { ApolloServer } from 'apollo-server'
+import { resolvers } from '@generated/type-graphql'
+import { context } from './context'
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-app.get('/api/dummy-endpoint', (req, res) =>
-  res.send({
-    message: 'Hello from the backend',
+const app = async () => {
+  const schema = await tq.buildSchema({
+    resolvers,
   })
-);
 
-app.listen(port, () => console.log(`listening on ${port}`));
+  new ApolloServer({ schema, context }).listen({ port: 4000 }, () =>
+    console.log(
+      `🚀 Server ready at: http://localhost:4000\n⭐️ See sample queries: http://pris.ly/e/ts/graphql-typegraphql-crud#using-the-graphql-api`,
+    ),
+  )
+}
+
+app()
