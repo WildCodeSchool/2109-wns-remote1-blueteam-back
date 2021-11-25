@@ -6,3 +6,5 @@ tmp/
 temp/
 dev.sqlite3
 .env
+yarn.lock
+yarn-error.log
