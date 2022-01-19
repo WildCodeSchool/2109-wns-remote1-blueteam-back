@@ -3,9 +3,10 @@ FROM node:lts-alpine
 
 WORKDIR /server
 COPY package.json ./
-RUN yarn install
-COPY tsconfig.json tsconfig.json
-COPY public public
-COPY src src
+COPY prisma ./prisma/
 
-CMD npm run dev
+RUN yarn install
+COPY tsconfig.json ./
+
+COPY src src
+CMD yarn run dev
