@@ -3,8 +3,8 @@ FROM node:lts
 
 WORKDIR /server
 COPY package.json ./
+COPY yarn.lock ./
 COPY prisma ./prisma/
-
 RUN yarn install
 COPY tsconfig.json ./
 
