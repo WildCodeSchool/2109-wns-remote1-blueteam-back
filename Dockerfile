@@ -1,5 +1,5 @@
 #Dockerfile back 😊
-FROM node:lts-alpine
+FROM node:lts
 
 WORKDIR /server
 COPY package.json ./
