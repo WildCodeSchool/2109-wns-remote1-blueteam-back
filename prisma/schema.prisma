@@ -8,11 +8,17 @@ generator client {
 
 generator typegraphql {
   provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
 }
 
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+enum UserKind {
+  NORMAL
+  ADMIN
 }
 
 model User {
@@ -22,4 +28,5 @@ model User {
   email     String    @unique
   password  String    
   job       String
+  kind      UserKind
 }
