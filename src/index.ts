@@ -4,11 +4,12 @@ import { ApolloServer } from 'apollo-server';
 import { resolvers } from '../prisma/generated/type-graphql';
 import { context } from './context';
 
+import register from './custom-resolvers/register';
 import users from './custom-resolvers/users';
 
 const app = async () => {
   const schema = await tq.buildSchema({
-    resolvers: [...resolvers, users],
+    resolvers: [...resolvers, users, register],
     emitSchemaFile: true,
   });
 
