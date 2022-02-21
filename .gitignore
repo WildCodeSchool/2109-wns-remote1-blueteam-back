@@ -7,3 +7,7 @@ temp/
 dev.sqlite3
 .env
 *.log
+
+
+# Ignore generated files and directories from prisma generate command
+prisma/generated/

@@ -8,6 +8,7 @@ generator client {
 
 generator typegraphql {
   provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
 }
 
 datasource db {
@@ -15,6 +16,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+// Define user role
+enum UserRole {
+  NORMAL
+  ADMIN
+}
+
+// Define user model
 model User {
   id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
   firstname String
@@ -22,4 +31,5 @@ model User {
   email     String    @unique
   password  String    
   job       String
+  role      UserRole
 }
