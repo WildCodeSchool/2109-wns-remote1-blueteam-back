@@ -1,22 +1,37 @@
 import { PrismaClient } from "@prisma/client";
 import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import bcrypt from "bcrypt";
 
-import {
-    User,
-    UserWhereUniqueInput,
-    UserRole,
-  } from "../../prisma/generated/type-graphql";
+import { User } from "../../prisma/generated/type-graphql";
+
+import { RegisterInput } from "./register/RegisterInput";
   
   @Resolver()
-  class RegisterResolver {
+    class RegisterResolver {
     @Mutation(() => User)
-    changeUserKind(
+    async register(
       @Ctx() ctx: { prisma: PrismaClient },
-      @Arg("where") where: UserWhereUniqueInput,
-      @Arg("role") role: UserRole,
-    ) {
-      console.log("Changing user role", { where, role });
-      return ctx.prisma.user.update({ where, data: { role } });
+      @Arg("data", () => RegisterInput)
+      {
+      email,
+      firstname,
+      lastname,
+      password,
+      job
+    }: RegisterInput): Promise<User> {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      const user = await ctx.prisma.user.create({
+        data: {
+          firstname,
+          lastname,
+          email,
+          password: hashedPassword,
+          job,
+          role: "NORMAL"
+        }
+      });
+  
+      return user;
     }
   }
 
