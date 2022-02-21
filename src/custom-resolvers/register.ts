@@ -19,4 +19,5 @@ import {
       return ctx.prisma.user.update({ where, data: { role } });
     }
   }
-  
+
+  export default RegisterResolver;
