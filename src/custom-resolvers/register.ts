@@ -1,21 +1,22 @@
-import { prisma } from "@prisma/client";
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { PrismaClient } from "@prisma/client";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
 
 import {
     User,
     UserWhereUniqueInput,
-    UserKind,
+    UserRole,
   } from "../../prisma/generated/type-graphql";
   
   @Resolver()
   class RegisterResolver {
     @Mutation(() => User)
     changeUserKind(
+      @Ctx() ctx: { prisma: PrismaClient },
       @Arg("where") where: UserWhereUniqueInput,
-      @Arg("kind") kind: UserKind,
+      @Arg("role") role: UserRole,
     ) {
-      console.log("Changing user kind", { where, kind });
-      return prisma.user.update({ where, data: { kind } });
+      console.log("Changing user role", { where, role });
+      return ctx.prisma.user.update({ where, data: { role } });
     }
   }
   

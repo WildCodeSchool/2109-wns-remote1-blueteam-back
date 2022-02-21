@@ -1,4 +1,4 @@
-import { prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { Arg, Ctx, ID, Query, Resolver } from "type-graphql";
 
 import { User } from "../../prisma/generated/type-graphql";
