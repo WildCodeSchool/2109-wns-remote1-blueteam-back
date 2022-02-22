@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 import { User } from "../../prisma/generated/type-graphql";
 
-import { RegisterInput } from "./register/RegisterInput";
+import { RegisterInput } from "./input-validators/RegisterInput";
   
   @Resolver()
     class RegisterResolver {
@@ -27,7 +27,7 @@ import { RegisterInput } from "./register/RegisterInput";
           email,
           password: hashedPassword,
           job,
-          role: "NORMAL"
+          role: "USER"
         }
       });
   
@@ -36,3 +36,4 @@ import { RegisterInput } from "./register/RegisterInput";
   }
 
   export default RegisterResolver;
+  
