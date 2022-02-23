@@ -1,12 +1,15 @@
 import { PrismaClient } from "@prisma/client";
-import { Arg, Ctx, ID, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, ID, Query, Resolver, UseMiddleware } from "type-graphql";
 
-import { User } from "../../prisma/generated/type-graphql";
+import { User } from "../../prisma/generated/type-graphql/models/User";
+
+import checkToken from "../middlewares/checkToken";
   
-// resolver get all users
+// users resolvers
 @Resolver()
     class UsersResolvers {
         @Query(() => [User])
+        @UseMiddleware(checkToken)
         async getAllUsers(
             @Ctx() ctx: { prisma: PrismaClient },
         ) {
@@ -14,6 +17,7 @@ import { User } from "../../prisma/generated/type-graphql";
             return allUsers;
         }
         @Query(() => User)
+        @UseMiddleware(checkToken)
         async getUserById(
             @Ctx() ctx: { prisma: PrismaClient },
             @Arg("id", () => ID) id: string
