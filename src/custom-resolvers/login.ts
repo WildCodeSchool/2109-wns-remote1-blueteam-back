@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Response, Request } from "express";
+import { Response } from "express";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
 
 import bcrypt from "bcrypt";
@@ -11,10 +11,9 @@ import { User } from "../../prisma/generated/type-graphql";
   
   @Resolver()
   class LoginResolver {
-
     @Query(() => User) // Omit password from User class
     async login(
-      @Ctx() ctx: { prisma: PrismaClient, req: Request, res: Response },
+      @Ctx() ctx: { prisma: PrismaClient, res: Response },
       @Arg("data", () => LoginInput)
       {
       email,
@@ -45,7 +44,8 @@ import { User } from "../../prisma/generated/type-graphql";
       // ctx.res.set("x-auth-token", token);
 
       // token for web app
-      ctx.req.res?.cookie('access_token', token)
+      ctx.res?.cookie('access_token', token, { maxAge: 1000 * 60 * 60, httpOnly: true })
+      // 1hour cookie validation & httpOnly readable only by server, avoid attacks and problems related to XSS
    
       return userToReturn;
     }
