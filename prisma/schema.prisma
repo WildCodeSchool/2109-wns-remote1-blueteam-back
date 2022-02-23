@@ -19,7 +19,7 @@ datasource db {
 
 // Define user role
 enum UserRole {
-  NORMAL
+  USER
   ADMIN
 }
 
@@ -31,5 +31,5 @@ model User {
   email     String    @unique
   password  String    
   job       String
-  role      UserRole
+  role      UserRole @default(USER)
 }

@@ -1,18 +1,20 @@
 import { PrismaClient } from "@prisma/client";
-import { Response } from "express";
+import { Response, Request } from "express";
 import { Arg, Ctx, Query, Resolver } from "type-graphql";
+
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 
-import { LoginInput } from "./register/LoginInput";
+import { LoginInput } from "./input-validators/LoginInput";
 
 import { User } from "../../prisma/generated/type-graphql";
   
   @Resolver()
   class LoginResolver {
-    @Query(() => User)
+
+    @Query(() => User) // Omit password from User class
     async login(
-      @Ctx() ctx: { prisma: PrismaClient, res: Response },
+      @Ctx() ctx: { prisma: PrismaClient, req: Request, res: Response },
       @Arg("data", () => LoginInput)
       {
       email,
@@ -28,24 +30,27 @@ import { User } from "../../prisma/generated/type-graphql";
 
       if (!isValid) {
         throw new Error("Invalid credentials");
-    }
+      }
 
-    const { password: _, ...userToReturn} = user;
+      const { password: _, ...userToReturn} = user;
 
-    const token = jwt.sign(
-      userToReturn,
-      process.env.JWTSECRET || "MYSUPERSECRET",
-      { expiresIn: '1h' }
-    );
+      const token = jwt.sign(
+        userToReturn,
+        process.env.JWTSECRET || "MYSUPERSECRET",
+        { expiresIn: '1h' }
+      );
+      console.log(token);
 
-    // token for mobile app
-    ctx.res.set("x-auth-token", token);
+      // token for mobile app
+      // ctx.res.set("x-auth-token", token);
 
-    // token for web app
-    ctx.res.cookie("jwt", token);
+      // token for web app
+      ctx.req.res?.cookie('access_token', token)
    
       return userToReturn;
     }
   }
+  
 
   export default LoginResolver;
+  
