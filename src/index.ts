@@ -13,23 +13,34 @@ import register from './custom-resolvers/register';
 import users from './custom-resolvers/users';
 import login from './custom-resolvers/login';
 
+import { resolvers } from '../prisma/generated/type-graphql';
+
 const app = async () => {
   // Initialize Express and HTTP server
   const app = express();
   app.use(cookieParser())
-  app.use(cors());
+  // add cors in .env file
+  app.use(cors(
+    {
+      credentials: true,
+      origin: [
+        'https://studio.apollographql.com/sandbox/explorer', // playground Apollo GraphQL /!\ only in developpenment
+        'http://localhost:8080' // app React
+      ],
+    }
+  ));
   const httpServer = http.createServer(app);
 
   // Build GraphQL schema from TS entities and resolvers
   const schema = await tq.buildSchema({
-    resolvers: [users, register, login],
+    resolvers: [...resolvers, users, register, login],
     emitSchemaFile: true,
   });
 
   // Create Apollo server
   const server = new ApolloServer({
     schema,
-    context: (req, res) => ({
+    context: ({ req, res }) => ({
       prisma: context.prisma,
       // cookies: req.cookies,
       req,
