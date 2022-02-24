@@ -15,20 +15,12 @@ import login from './custom-resolvers/login';
 
 import { resolvers } from '../prisma/generated/type-graphql';
 
-const app = async () => {
+const MyServer = async () => {
   // Initialize Express and HTTP server
   const app = express();
   app.use(cookieParser())
   // add cors in .env file
-  app.use(cors(
-    {
-      credentials: true,
-      origin: [
-        'https://studio.apollographql.com/sandbox/explorer', // playground Apollo GraphQL /!\ only in developpenment
-        'http://localhost:8080' // app React
-      ],
-    }
-  ));
+  app.use(cors());
   const httpServer = http.createServer(app);
 
   // Build GraphQL schema from TS entities and resolvers
@@ -60,7 +52,6 @@ const app = async () => {
     httpServer.listen({ port: 4000 }, resolve)
   );
   console.log(`🚀 Server ready at: http://localhost:4000\n⭐️ See sample queries: http://pris.ly/e/ts/graphql-typegraphql-crud#using-the-graphql-api`);
-
 };
 
-app();
+MyServer();

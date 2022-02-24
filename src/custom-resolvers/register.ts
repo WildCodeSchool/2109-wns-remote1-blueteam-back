@@ -17,7 +17,7 @@ import { RegisterInput } from "./input-validators/RegisterInput";
       firstname,
       lastname,
       password,
-      job
+      job,
     }: RegisterInput): Promise<User> {
       const hashedPassword = await bcrypt.hash(password, 12);
       const user = await ctx.prisma.user.create({
@@ -26,8 +26,8 @@ import { RegisterInput } from "./input-validators/RegisterInput";
           lastname,
           email,
           password: hashedPassword,
-          job,
-          role: "USER"
+          role: "USER",
+          job: ""
         }
       });
   
