@@ -25,7 +25,7 @@ enum UserRole {
 
 // Define user model
 model User {
-  id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
   firstname String
   lastname  String
   email     String    @unique
