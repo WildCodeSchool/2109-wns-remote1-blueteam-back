@@ -10,14 +10,14 @@ import checkToken from '../middlewares/checkToken';
 class UsersResolvers {
   @Query(() => [User])
   @UseMiddleware(checkToken)
-  static async getAllUsers(@Ctx() ctx: { prisma: PrismaClient }) {
+  async getAllUsers(@Ctx() ctx: { prisma: PrismaClient }) {
     const allUsers = await ctx.prisma.user.findMany();
     return allUsers;
   }
 
   @Query(() => User)
   @UseMiddleware(checkToken)
-  static async getUserById(
+  async getUserById(
     @Ctx() ctx: { prisma: PrismaClient },
     @Arg('id', () => ID) id: string
   ) {
