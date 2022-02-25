@@ -20,7 +20,17 @@ const MyServer = async () => {
   const app = express();
   app.use(cookieParser());
   // add cors in .env file
-  app.use(cors());
+  app.use(
+    cors(
+      {
+        credentials: true,
+        origin: [
+          'https://studio.apollographql.com/sandbox/explorer', // playground Apollo GraphQL /!\ only in developpenment
+          'http://localhost:8081' // app React
+        ],
+      }
+    )
+  );
   const httpServer = http.createServer(app);
 
   // Build GraphQL schema from TS entities and resolvers
