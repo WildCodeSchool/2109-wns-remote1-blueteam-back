@@ -46,8 +46,11 @@ class LoginResolver {
     ctx.res?.cookie('accessToken', token, {
       maxAge: 1000 * 60 * 60,
       httpOnly: true,
+      secure: true,
     });
-    // 1hour cookie validation & httpOnly readable only by server, avoid attacks and problems related to XSS
+    // 1hour cookie validation
+    // httpOnly readable only by server, avoid attacks and problems related to XSS
+    // scure to authorize only on https
 
     return userToReturn;
   }
