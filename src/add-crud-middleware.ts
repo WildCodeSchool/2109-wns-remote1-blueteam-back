@@ -5,7 +5,10 @@ import {
   Team,
   Project,
   ProjectComment,
-  File,
+  ProjectFile,
+  Task,
+  TaskComment,
+  TaskFile,
 } from '../prisma/generated/type-graphql';
 import checkToken from './middlewares/checkToken';
 import refreshToken from './middlewares/refreshToken';
@@ -23,7 +26,16 @@ const mapped: ResolversEnhanceMap = {
   ProjectComment: {
     _all: [UseMiddleware(checkToken), UseMiddleware(refreshToken)],
   },
-  File: {
+  ProjectFile: {
+    _all: [UseMiddleware(checkToken), UseMiddleware(refreshToken)],
+  },
+  Task: {
+    _all: [UseMiddleware(checkToken), UseMiddleware(refreshToken)],
+  },
+  TaskComment: {
+    _all: [UseMiddleware(checkToken), UseMiddleware(refreshToken)],
+  },
+  TaskFile: {
     _all: [UseMiddleware(checkToken), UseMiddleware(refreshToken)],
   },
 };
