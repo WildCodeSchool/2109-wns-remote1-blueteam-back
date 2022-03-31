@@ -25,22 +25,26 @@ enum UserRole {
 
 // Define user model
 model User {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  avatar    String?
-  firstname String
-  lastname  String
-  email     String    @unique
-  password  String    
-  job       String
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  avatar            String?
+  firstname         String
+  lastname          String
+  email             String    @unique
+  password          String    
+  job               String
   // Define user role with USER as default
-  role      UserRole  @default(USER)
+  role              UserRole  @default(USER)
   // The team the user belongs to
-  team      Team?     @relation(fields: [teamId], references: [id])
-  teamId    String?    @db.ObjectId
+  team              Team?     @relation(fields: [teamId], references: [id])
+  teamId            String?   @db.ObjectId
   // The list of projects the user is assigned to
-  projects  Project[]
+  projects          Project[]
   // The list of comments the user has made on projects
-  comments  ProjectComment[]
+  project_comments  ProjectComment[]
+  // The list of comments the user has made on tasks
+  task_comments     TaskComment[]
+  // The tasks the user is assigned to
+  tasks             Task[]
 }
 
 // Define team model
@@ -53,19 +57,21 @@ model Team {
 
 // Define project model
 model Project {
-  id        String    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  status    String
-  description String? // Optionnal for development & testing
-  date      DateTime? // Optionnal for development & testing
-  deadline  DateTime?
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  status      String
+  description String?   // Optionnal for development & testing
+  date        DateTime? // Optionnal for development & testing
+  deadline    DateTime? // Optionnal
   // The user that own and created the project
-  owner     User      @relation(fields: [ownerId], references: [id])
-  ownerId   String    @db.ObjectId
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     String    @db.ObjectId
+  // The list of tasks that belong to the project
+  tasks       Task[]
   // The list of comments users has made on the project
-  comments  ProjectComment[]
+  comments    ProjectComment[]
   // The list of files attached to the project
-  files     File[]
+  files       ProjectFile[]
 }
 
 // Define comment model
@@ -81,13 +87,58 @@ model ProjectComment {
   authorId   String   @db.ObjectId
 }
 
-// Define file model
-model File {
+// Define Task model
+model Task {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  // The user assigned to the task
+  assignee    User?     @relation(fields: [assigneeId], references: [id]) // Optionnal
+  assigneeId  String?   @db.ObjectId // Optionnal
+  // The duration of the task
+  duration    Int?      // Optionnal
+  breakpoints String?   // Optionnal
+  time_spent  Int?      // Optionnal
+  due_date    DateTime? // Optionnal
+  priority    DateTime? // Optionnal
+  // The project the task belongs to
+  project     Project   @relation(fields: [projectId], references: [id])
+  projectId   String    @db.ObjectId
+  // The list of comments users has made on the task
+  comments    TaskComment[]
+  // The list of files attached to the task
+  files       TaskFile[]
+}
+
+model TaskComment {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  date      DateTime? // Optionnal for development & testing
+  content   String
+  // The task the comment belongs to
+  task      Task      @relation(fields: [taskId], references: [id])
+  taskId    String    @db.ObjectId
+  // The user that has made the comment
+  author     User     @relation(fields: [authorId], references: [id])
+  authorId   String   @db.ObjectId
+}
+
+// Define file model for project
+model ProjectFile {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String
-  url       String? // Optionnal for development & testing
-  size      Int? // Optionnal for development & testing
+  url       String?   // Optionnal for development & testing
+  size      Int?      // Optionnal for development & testing
   // The project the file belongs to
   project   Project   @relation(fields: [projectId], references: [id])
   projectId String    @db.ObjectId
+}
+
+// Define file model for project
+model TaskFile {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  url       String?   // Optionnal for development & testing
+  size      Int?      // Optionnal for development & testing
+  // The project the file belongs to
+  task      Task      @relation(fields: [taskId], references: [id])
+  taskId    String    @db.ObjectId
 }
