@@ -1,7 +1,13 @@
 import { verify } from 'jsonwebtoken';
 import { MiddlewareFn } from 'type-graphql';
+import { User } from '../../prisma/generated/type-graphql';
 
 import { Context as TContext } from '../context';
+
+type JwtPayloadUser = {
+  iat: number;
+  exp: number;
+} & Partial<User>;
 
 const checkToken: MiddlewareFn<TContext> = ({ context }, next) => {
   try {
@@ -15,7 +21,12 @@ const checkToken: MiddlewareFn<TContext> = ({ context }, next) => {
 
     const token = authorization?.split(' ')[1] || accessToken;
 
-    verify(token, process.env.JWTSECRET || 'MYSUPERSECRET');
+    const { exp, iat, ...user } = verify(
+      token,
+      process.env.JWTSECRET || 'MYSUPERSECRET'
+    ) as unknown as JwtPayloadUser;
+
+    context.user = user;
 
     return next();
   } catch (err) {
