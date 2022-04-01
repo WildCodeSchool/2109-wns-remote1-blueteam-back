@@ -30,6 +30,7 @@ model User {
   firstname         String
   lastname          String
   email             String    @unique
+  /// @TypeGraphQL.omit(output: true)
   password          String    
   job               String
   // Define user role with USER as default
