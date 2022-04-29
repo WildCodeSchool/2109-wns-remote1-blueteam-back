@@ -24,7 +24,7 @@ const MyServer = async () => {
   // Initialize Express and HTTP server
   const app = express();
   app.use(cookieParser());
-  // add cors in .env file
+  // add cors in .env.development.local file
   app.use(
     cors({
       credentials: true,
