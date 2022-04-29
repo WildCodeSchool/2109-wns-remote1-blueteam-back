@@ -4,7 +4,7 @@ module.exports = {
     node: true,
     es2021: true,
   },
-  extends: ['airbnb-base', 'airbnb-typescript/base', 'prettier'],
+  extends: ['airbnb-base', 'airbnb-typescript/base', 'plugin:prettier/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
@@ -13,6 +13,6 @@ module.exports = {
     tsconfigRootDir: './',
   },
   plugins: ['@typescript-eslint', 'prettier'],
-  rules: { 'no-underscore-dangle': ['error', { allow: ['_id'] }] },
+  rules: { 'no-underscore-dangle': ['error', { allow: ['_id'] }] , 'class-methods-use-this': 'off' },
   ignorePatterns: ['.eslintrc.js'],
 };
