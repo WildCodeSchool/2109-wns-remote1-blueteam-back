@@ -26,15 +26,19 @@ const MyServer = async () => {
   app.use(cookieParser());
   // add cors in .env.development.local file
   app.use(
-    cors({
-      credentials: true,
-      origin: [
-        'https://studio.apollographql.com/sandbox/explorer', // playground Apollo GraphQL /!\ only in developpenment
-        'https://studio.apollographql.com', // playground Apollo GraphQL /!\ only in developpenment
-        'http://localhost:5050/graphql', // localhost:5050
-        'http://localhost:8080', // app React
-      ],
-    })
+    cors(
+      {
+        credentials: true,
+        origin: [
+          'https://localhost:5050',
+          'http://localhost:8081', // app React (Ricardo)
+          'https://studio.apollographql.com/sandbox/explorer', // playground Apollo GraphQL /!\ only in developpenment
+          'https://studio.apollographql.com', // playground Apollo GraphQL /!\ only in developpenment
+          'http://localhost:5050/graphql', // localhost:5050
+          'http://localhost:8080', // app React
+        ],
+      }
+    )
   );
 
   const httpServer = http.createServer(app);
