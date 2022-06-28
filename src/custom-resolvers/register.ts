@@ -5,12 +5,13 @@ import bcrypt from 'bcrypt';
 import { User } from '../../prisma/generated/type-graphql';
 
 import RegisterInput from './input-validators/RegisterInput';
+import { Context } from "../context";
 
 @Resolver()
 class RegisterResolver {
   @Mutation(() => User)
   async register(
-    @Ctx() ctx: { prisma: PrismaClient },
+    @Ctx() ctx: Context,
     @Arg('data', () => RegisterInput)
     { email, firstname, lastname, password, job }: RegisterInput
   ): Promise<User> {
