@@ -12,7 +12,7 @@ import { context } from './context';
 import register from './custom-resolvers/register';
 import users from './custom-resolvers/users';
 import login from './custom-resolvers/login';
-
+import logout from "./custom-resolvers/logout";
 import {
   applyResolversEnhanceMap,
   resolvers,
@@ -47,7 +47,7 @@ const MyServer = async () => {
 
   // Build GraphQL schema from TS entities and resolvers
   const schema = await tq.buildSchema({
-    resolvers: [...resolvers, users, register, login],
+    resolvers: [...resolvers, users, register, login, logout],
     emitSchemaFile: true,
   });
 
