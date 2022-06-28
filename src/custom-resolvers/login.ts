@@ -13,7 +13,7 @@ import UserWithToken from "../custom-types/userWithToken";
 
 @Resolver()
 class LoginResolver {
-  @Query(() => User)
+  @Query(() => UserWithToken)
   async login(
     @Ctx() ctx: Context,
     @Arg('data', () => LoginInput)
