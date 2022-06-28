@@ -8,12 +8,14 @@ import jwt from 'jsonwebtoken';
 import LoginInput from './input-validators/LoginInput';
 
 import { User } from '../../prisma/generated/type-graphql';
+import { Context } from "../context";
+import UserWithToken from "../custom-types/userWithToken";
 
 @Resolver()
 class LoginResolver {
   @Query(() => User)
   async login(
-    @Ctx() ctx: { prisma: PrismaClient; res: Response },
+    @Ctx() ctx: Context,
     @Arg('data', () => LoginInput)
     { email, password }: LoginInput
   ): Promise<Partial<User>> {
