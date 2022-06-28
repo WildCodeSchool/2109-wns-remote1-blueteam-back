@@ -39,9 +39,6 @@ class LoginResolver {
     );
     console.log(token); // for developpement purpose only
 
-    // token for mobile app
-    // ctx.res.set("x-auth-token", token);
-
     // token for web app
     ctx.res?.cookie('accessToken', token, {
       maxAge: 1000 * 60 * 60,
@@ -52,7 +49,8 @@ class LoginResolver {
     // httpOnly readable only by server, avoid attacks and problems related to XSS
     // scure to authorize only on https
 
-    return userToReturn;
+    // return the token for the mobile client
+    return { token, ...userToReturn };
   }
 }
 
