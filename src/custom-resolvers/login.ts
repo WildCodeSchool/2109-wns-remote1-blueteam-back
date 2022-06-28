@@ -18,7 +18,7 @@ class LoginResolver {
     @Ctx() ctx: Context,
     @Arg('data', () => LoginInput)
     { email, password }: LoginInput
-  ): Promise<Partial<User>> {
+  ): Promise<Partial<UserWithToken>> {
     const user = await ctx.prisma.user.findUnique({ where: { email } });
 
     if (!user) {
