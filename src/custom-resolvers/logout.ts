@@ -3,9 +3,10 @@ import { Context } from '../context';
 
 @Resolver()
 class LogoutResolver {
-  @Mutation(() => Boolean, { nullable: true })
-  async logout(@Ctx() ctx: Context): Promise<void> {
+  @Mutation(() => Boolean)
+  async logout(@Ctx() ctx: Context): Promise<boolean> {
     ctx.res.clearCookie('accessToken');
+    return true;
   }
 }
 export default LogoutResolver;
