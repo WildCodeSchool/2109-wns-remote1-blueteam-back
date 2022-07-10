@@ -13,6 +13,8 @@ import register from './custom-resolvers/register';
 import users from './custom-resolvers/users';
 import login from './custom-resolvers/login';
 import logout from "./custom-resolvers/logout";
+import forgotPassword from "./custom-resolvers/forgotPassword";
+import changePassword from "./custom-resolvers/changePassword";
 import {
   applyResolversEnhanceMap,
   resolvers,
@@ -47,7 +49,7 @@ const MyServer = async () => {
 
   // Build GraphQL schema from TS entities and resolvers
   const schema = await tq.buildSchema({
-    resolvers: [...resolvers, users, register, login, logout],
+    resolvers: [...resolvers, users, register, login, logout,forgotPassword, changePassword],
     emitSchemaFile: true,
   });
 
