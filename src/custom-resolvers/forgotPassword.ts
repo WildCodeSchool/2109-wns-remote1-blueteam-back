@@ -1,6 +1,5 @@
 import { Resolver, Mutation, Arg, Ctx } from "type-graphql";
 import jwt from 'jsonwebtoken';
-
 import { sendEmail } from "../mail-service/sendEmail";
 import { Context } from "../context";
 import ForgotPasswordInput from "./input-validators/ForgotPasswordInput";
@@ -28,7 +27,7 @@ class ForgotPasswordResolver {
 
     await sendEmail(
       email,
-      `http://localhost:8080/change-password/${token}`
+      `http://localhost:8080/changepassword?token=${token}`
     );
 
     return true;
