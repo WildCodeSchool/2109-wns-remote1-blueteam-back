@@ -34,8 +34,10 @@ class LoginResolver {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const { password: _, ...userToReturn } = user;
 
+    const {avatar: never, ...userAsPayload} = userToReturn;
+
     const token = jwt.sign(
-      userToReturn,
+      userAsPayload,
       process.env.JWTSECRET || 'MYSUPERSECRET',
       { expiresIn: '1h' }
     );
